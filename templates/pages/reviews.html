@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Reviews — {{ site.name }}{% endblock %}
+{% block description %}Real Google Maps reviews of Food Palace Family Restaurant, Kengeri Satellite Town — the good and the bad, unedited.{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-bottom:2.5rem">
+  <div class="shell">
+    <span class="banner">Reviews</span>
+    <h1 style="font-size:clamp(2.4rem,6.5vw,4.4rem); margin:1.5rem 0 1.5rem; max-width:19ch">
+      What people said after eating here
+    </h1>
+    <p class="type-lede">
+      Pulled from our Google Maps listing and printed as written. We have not
+      removed the one-star ones.
+    </p>
+  </div>
+</section>
+
+<section class="shell" style="padding-bottom:2.5rem">
+  <div class="rating-panel reveal">
+    <div class="rating-panel__score">
+      <b>{{ review_avg|default:site.rating }}</b>
+      <span class="stars" role="img" aria-label="{{ review_avg|default:site.rating }} out of 5" style="justify-content:center; margin:.5rem 0">
+        {% for i in "12345" %}
+          <svg viewBox="0 0 24 24" class="star--on" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+        {% endfor %}
+      </span>
+      <small>{{ review_total }} review{{ review_total|pluralize }} on this site<br>{{ site.rating_count }} on Google</small>
+    </div>
+
+    <div style="display:grid; gap:.55rem">
+      {% for row in breakdown %}
+        <div class="bar-row">
+          <span>{{ row.star }}★</span>
+          <span class="bar"><span data-pct="{{ row.pct }}"></span></span>
+          <span>{{ row.count }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="shell" style="padding-bottom:6rem">
+  <div class="menu-bar" style="top:74px">
+    <div class="filter-row">
+      <a href="{% url 'core:reviews' %}" class="filter {% if not active_rating %}is-on{% endif %}">All ratings</a>
+      {% for star in "54321" %}
+        <a href="?rating={{ star }}" class="filter {% if active_rating == star %}is-on{% endif %}">{{ star }} star</a>
+      {% endfor %}
+    </div>
+    <div class="filter-row">
+      <a href="?{% if active_rating %}rating={{ active_rating }}&{% endif %}sort=highest" class="filter {% if active_sort == 'highest' %}is-on{% endif %}">Highest first</a>
+      <a href="?{% if active_rating %}rating={{ active_rating }}&{% endif %}sort=lowest" class="filter {% if active_sort == 'lowest' %}is-on{% endif %}">Lowest first</a>
+      <a href="?{% if active_rating %}rating={{ active_rating }}&{% endif %}sort=liked" class="filter {% if active_sort == 'liked' %}is-on{% endif %}">Most liked</a>
+    </div>
+  </div>
+
+  <div class="review-grid">
+    {% for review in reviews %}
+      {% include "partials/review_card.html" %}
+    {% empty %}
+      <div class="menu-empty" style="grid-column:1/-1">
+        <p>No reviews here yet.</p>
+        <p style="font-size:.9rem">
+          Add them in the admin, or bulk import with
+          <code style="color:var(--saffron)">python manage.py import_reviews core/data/reviews.json</code>
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="reveal" style="margin-top:3.5rem; text-align:center; padding:2.5rem 1.5rem; border:1px solid var(--line); border-radius:22px; background:linear-gradient(165deg, rgba(42,31,25,.7), transparent)">
+    <h2 style="font-size:clamp(1.6rem,3.5vw,2.3rem); margin-bottom:.8rem">Ate with us recently?</h2>
+    <p class="type-lede" style="margin:0 auto 1.8rem">Tell the next person what to order, and what to skip.</p>
+    <a href="{{ site.maps_url }}" target="_blank" rel="noopener" class="btn btn--gold">Write a review on Google</a>
+  </div>
+</section>
+
+{% endblock %}

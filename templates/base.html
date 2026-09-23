@@ -1,0 +1,84 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site.name }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ site.name }} in Kengeri Satellite Town, Bengaluru. Malabar biryani, al faham, broasted chicken and falooda. Open 6 am to 11:30 pm, every day.{% endblock %}">
+  <meta name="theme-color" content="#140F0C">
+
+  <meta property="og:title" content="{% block og_title %}{{ site.name }}{% endblock %}">
+  <meta property="og:description" content="{{ site.tagline }} — {{ site.address_short }}">
+  <meta property="og:type" content="restaurant">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            board: "#140F0C",
+            ember: "#C2431F",
+            saffron: "#E9A83A",
+            leaf: "#1F5B4E",
+            coconut: "#F4EADC",
+          },
+          fontFamily: {
+            display: ['Fraunces', 'Georgia', 'serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E9A83A'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='Georgia' font-weight='bold' fill='%231A1008'>F</text></svg>">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "{{ site.name }}",
+    "servesCuisine": "North Indian, Malabar, Arabian",
+    "priceRange": "{{ site.price_range }}",
+    "telephone": "{{ site.phone_primary }}",
+    "email": "{{ site.email }}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "173, Kengeri Ring Rd, Stage I",
+      "addressLocality": "Kengeri Satellite Town, Bengaluru",
+      "addressRegion": "Karnataka",
+      "postalCode": "560056",
+      "addressCountry": "IN"
+    },
+    "openingHours": "Mo-Su 06:00-23:30",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{ site.rating }}",
+      "reviewCount": "1059"
+    }
+  }
+  </script>
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-4 focus:rounded-full focus:bg-saffron focus:px-5 focus:py-2 focus:text-board">Skip to content</a>
+
+  {% include "partials/header.html" %}
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "partials/footer.html" %}
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

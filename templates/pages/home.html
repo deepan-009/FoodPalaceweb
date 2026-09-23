@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ site.name }} — Kengeri Satellite Town, Bengaluru{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="shell hero__grid">
+    <div data-parallax>
+      <p class="hero__kannada">{{ site.name_kn }}</p>
+
+      <h1 class="hero__title">
+        Food Palace
+        <em>The real taste of Malabar</em>
+      </h1>
+
+      <div class="hero__meta">
+        <span class="chip"><strong>{{ site.rating }}</strong> from {{ site.rating_count }} Google reviews</span>
+        <span class="chip"><strong>{{ site.price_range }}</strong> for two courses</span>
+        <span class="chip">North Indian · Malabar · Arabian</span>
+        <span class="chip">Halal kitchen</span>
+      </div>
+
+      <p class="type-lede">
+        Puttu and appam from six in the morning. Thalassery dum biryani at noon.
+        Al faham and shawarma running until half past eleven at night. One kitchen
+        in Kengeri Satellite Town that has not taken a weekly off in years.
+      </p>
+
+      <div class="hero__actions" style="margin-top:2rem">
+        <a href="{% url 'core:menu' %}" class="btn">
+          See the full menu
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="tel:{{ site.phone_primary }}" class="btn btn--ghost">Call {{ site.phone_primary }}</a>
+        <a href="{{ site.maps_url }}" target="_blank" rel="noopener" class="btn btn--ghost">Get directions</a>
+      </div>
+    </div>
+
+    <div class="counters reveal">
+      <p style="font-size:.85rem; color:var(--coconut-dim); margin:0 0 .3rem">Three counters, one bill</p>
+
+      <a href="{% url 'core:menu' %}?kitchen=food_palace" class="counter">
+        <span class="counter__mark" aria-hidden="true">🍛</span>
+        <span>
+          <span class="counter__name">Food Palace</span><br>
+          <span class="counter__note">Biryani, tandoor, Malabar curries, parotta</span>
+        </span>
+        <span class="counter__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a href="{% url 'core:menu' %}?kitchen=broasted_king" class="counter">
+        <span class="counter__mark" aria-hidden="true">🍗</span>
+        <span>
+          <span class="counter__name">Broasted King</span><br>
+          <span class="counter__note">Pressure-fried chicken, burgers, pizza, buckets</span>
+        </span>
+        <span class="counter__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a href="{% url 'core:menu' %}?kitchen=juice_palace" class="counter">
+        <span class="counter__mark" aria-hidden="true">🥤</span>
+        <span>
+          <span class="counter__name">Juice Palace</span><br>
+          <span class="counter__note">Fresh juice, mojitos, falooda, ice cream</span>
+        </span>
+        <span class="counter__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <div class="counter" style="cursor:default">
+        <span class="counter__mark" aria-hidden="true">🛵</span>
+        <span>
+          <span class="counter__name">Free home delivery</span><br>
+          <span class="counter__note">Within {{ site.delivery_radius }} on orders over {{ site.delivery_minimum }}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <span>
+      <b>Thalassery dum biryani</b> Kerala parotta <b>Al faham</b> Chicken shawarma
+      <b>Kalmi kabab</b> Drums of heaven <b>Puttu</b> Gadbad falooda
+      <b>Broasted chicken</b> Fish mulakittath
+    </span>
+    <span>
+      <b>Thalassery dum biryani</b> Kerala parotta <b>Al faham</b> Chicken shawarma
+      <b>Kalmi kabab</b> Drums of heaven <b>Puttu</b> Gadbad falooda
+      <b>Broasted chicken</b> Fish mulakittath
+    </span>
+  </div>
+</div>
+
+{% if signatures %}
+<section class="section">
+  <div class="shell">
+    <div class="reveal" style="margin-bottom:2.5rem">
+      <span class="banner">What to order first</span>
+      <p class="type-lede" style="margin-top:1.2rem">
+        If it is your first time, these are the plates the regulars keep coming back for.
+      </p>
+    </div>
+
+    <div class="dish-grid">
+      {% for item in signatures %}
+        <article class="dish reveal">
+          <p class="dish__cat">{{ item.category.name }}</p>
+          <h3 class="dish__name">{{ item.name }}</h3>
+          <p class="dish__price">{{ item.price_display }}</p>
+        </article>
+      {% endfor %}
+    </div>
+
+    <div style="margin-top:2rem">
+      <a href="{% url 'core:menu' %}" class="btn btn--ghost">Browse all dishes</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section" style="padding-top:0">
+  <div class="shell split">
+    <div class="reveal">
+      <span class="banner banner--sm">A day at the Palace</span>
+      <div class="timeline" style="margin-top:2rem">
+        <div class="timeline__item">
+          <p class="timeline__time">6:00 am</p>
+          <p style="margin:0; color:var(--coconut-dim)">Steam rises off the puttu moulds. Appam, idiappam and pathal kappa go out to the early shift with tea.</p>
+        </div>
+        <div class="timeline__item">
+          <p class="timeline__time">12:30 pm</p>
+          <p style="margin:0; color:var(--coconut-dim)">Biryani vessels open. Thalassery chicken dum at ₹180, mutton at ₹240, both sealed and finished on slow coals.</p>
+        </div>
+        <div class="timeline__item">
+          <p class="timeline__time">7:00 pm</p>
+          <p style="margin:0; color:var(--coconut-dim)">Tandoor at full heat. Kalmi kabab, hariyali tandoori and drums of heaven leave the pass in pairs.</p>
+        </div>
+        <div class="timeline__item">
+          <p class="timeline__time">11:30 pm</p>
+          <p style="margin:0; color:var(--coconut-dim)">Last shawarma comes off the spit. Falooda glasses go out to the tables that stayed.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <span class="banner banner--sm">Good to know</span>
+      <div class="fact-grid" style="margin-top:2rem">
+        <div class="fact">
+          <h4>Service</h4>
+          <ul><li>Dine-in</li><li>Takeaway</li><li>Delivery</li><li>Table service</li></ul>
+        </div>
+        <div class="fact">
+          <h4>Good for</h4>
+          <ul><li>Lunch and dinner</li><li>Solo dining</li><li>Groups</li><li>Kids</li></ul>
+        </div>
+        <div class="fact">
+          <h4>Payments</h4>
+          <ul><li>Credit cards</li><li>Debit cards</li><li>NFC mobile payments</li><li>Cash</li></ul>
+        </div>
+        <div class="fact">
+          <h4>Parking</h4>
+          <ul><li>Free parking lot</li><li>Free street parking</li><li>15–20 bikes</li><li>Cars: park nearby</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if featured_reviews %}
+<section class="section" style="padding-top:0">
+  <div class="shell">
+    <div class="reveal" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:2.5rem">
+      <div>
+        <span class="banner">In their words</span>
+        <p class="type-lede" style="margin-top:1.2rem">
+          {{ site.rating_count }} people have rated us in public. Here are a few, unedited.
+        </p>
+      </div>
+      <a href="{% url 'core:reviews' %}" class="btn btn--ghost">Read all reviews</a>
+    </div>
+
+    <div class="review-grid">
+      {% for review in featured_reviews %}
+        {% include "partials/review_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section" style="padding-top:0">
+  <div class="shell reveal" style="text-align:center; padding:clamp(3rem,6vw,5rem) 1.5rem; border:1px solid var(--line); border-radius:22px; background:linear-gradient(165deg, rgba(42,31,25,.7), transparent)">
+    <h2 style="font-size:clamp(2rem,5vw,3.4rem); margin-bottom:1rem">Come hungry, or send it home</h2>
+    <p class="type-lede" style="margin:0 auto 2rem">
+      Walk in to 173, Kengeri Ring Road, or call the counter and we will pack it.
+      Free delivery within {{ site.delivery_radius }} on orders over {{ site.delivery_minimum }}.
+    </p>
+    <div style="display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center">
+      <a href="tel:{{ site.phone_primary }}" class="btn">Call {{ site.phone_primary }}</a>
+      <a href="{% url 'core:contact' %}" class="btn btn--ghost">Book a table</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

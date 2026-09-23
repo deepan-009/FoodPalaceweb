@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Awards and recognition — {{ site.name }}{% endblock %}
+{% block description %}What Food Palace has earned: a 3.8 rating across 1,059 Google reviews, nine years of daily service, halal certification and catering across west Bengaluru.{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-bottom:3rem">
+  <div class="shell">
+    <span class="banner">Awards</span>
+    <h1 style="font-size:clamp(2.4rem,6.5vw,4.4rem); margin:1.5rem 0 1.5rem; max-width:20ch">
+      Earned at the counter, not at a ceremony
+    </h1>
+    <p class="type-lede">
+      No trophies on the wall. What this kitchen has is a public record: every
+      plate rated by the people who ate it, and a door that has opened at six
+      every morning for years.
+    </p>
+  </div>
+</section>
+
+<section class="shell" style="padding-bottom:5rem">
+  <div class="award-hero">
+    {% for award in highlights %}
+      {% if award.metric %}
+        <div class="award-metric reveal">
+          <b>{{ award.metric }}</b>
+          <span>{{ award.metric_label }}</span>
+        </div>
+      {% endif %}
+    {% empty %}
+      <div class="award-metric reveal"><b>{{ site.rating }}</b><span>average Google rating</span></div>
+      <div class="award-metric reveal"><b>{{ site.rating_count }}</b><span>reviews</span></div>
+      <div class="award-metric reveal"><b>6 am</b><span>doors open, every day</span></div>
+      <div class="award-metric reveal"><b>3</b><span>counters under one roof</span></div>
+    {% endfor %}
+  </div>
+
+  <div class="award-list">
+    {% for award in awards %}
+      <article class="award reveal">
+        <span class="award__seal" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="6"/><path d="M8.2 13.4 7 22l5-3 5 3-1.2-8.6"/>
+          </svg>
+        </span>
+        <div>
+          <h2 class="award__title">{{ award.title }}</h2>
+          {% if award.issuer or award.year %}
+            <p class="award__by">{{ award.issuer }}{% if award.issuer and award.year %} · {% endif %}{{ award.year }}</p>
+          {% endif %}
+          {% if award.description %}<p class="award__body">{{ award.description }}</p>{% endif %}
+        </div>
+      </article>
+    {% empty %}
+      <div class="menu-empty">
+        <p>No awards loaded yet.</p>
+        <p style="font-size:.9rem">Run <code style="color:var(--saffron)">python manage.py seed_data</code>, or add them in the admin.</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="shell" style="padding-bottom:6rem">
+  <div class="reveal" style="text-align:center; padding:clamp(2.5rem,5vw,4rem) 1.5rem; border:1px solid var(--line); border-radius:22px; background:linear-gradient(165deg, rgba(42,31,25,.7), transparent)">
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:1rem">Add your own verdict</h2>
+    <p class="type-lede" style="margin:0 auto 2rem">
+      The rating only means something because people keep writing. If you have
+      eaten here, tell the next person what to order.
+    </p>
+    <div style="display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center">
+      <a href="{{ site.maps_url }}" target="_blank" rel="noopener" class="btn btn--gold">Write a Google review</a>
+      <a href="{% url 'core:reviews' %}" class="btn btn--ghost">Read what others said</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

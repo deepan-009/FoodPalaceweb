@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}About us — {{ site.name }}{% endblock %}
+{% block description %}A halal family restaurant in Kengeri Satellite Town serving Malabar, North Indian and Arabian food, with a broasted chicken counter and a juice bar.{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-bottom:3rem">
+  <div class="shell">
+    <span class="banner">About us</span>
+    <h1 style="font-size:clamp(2.4rem,6.5vw,4.6rem); margin:1.5rem 0 1.5rem; max-width:18ch">
+      A family restaurant that keeps Malabar hours
+    </h1>
+    <p class="type-lede">
+      Food Palace sits on the Kengeri Ring Road, opposite Union Bank near Hoysala
+      Circle. It is a casual room with table service, built for groups and for
+      people eating alone at nine at night. The kitchen is halal, the menu runs
+      from a ₹10 kuboos to a ₹1,050 family bucket, and the doors open at six in
+      the morning, seven days a week.
+    </p>
+  </div>
+</section>
+
+<section class="shell split" style="padding-bottom:5rem">
+  <div class="reveal">
+    <h2 style="font-size:clamp(1.7rem,3.5vw,2.4rem); margin-bottom:1.2rem">Where the food comes from</h2>
+    <p style="color:var(--coconut-dim); max-width:60ch">
+      The heart of the menu is Malabar: Thalassery dum biryani sealed and finished
+      slowly, mulakittath and kondattam cooked the way they are cooked on the north
+      Kerala coast, puttu and appam at the morning counter. Around it sits a full
+      North Indian kitchen with a working tandoor, and an Arabian section turning
+      out al faham and shawarma off the vertical grill.
+    </p>
+    <p style="color:var(--coconut-dim); max-width:60ch">
+      Vegetarians are not an afterthought. There are twenty-six paneer and vegetable
+      gravies, a separate veg starters board, veg biryani, paneer fried rice and a
+      whole juice counter that never touches the meat line.
+    </p>
+  </div>
+
+  <div class="reveal">
+    <h2 style="font-size:clamp(1.7rem,3.5vw,2.4rem); margin-bottom:1.2rem">Three counters, one dining room</h2>
+    <div class="counters">
+      <div class="counter" style="cursor:default">
+        <span class="counter__mark" aria-hidden="true">🍛</span>
+        <span>
+          <span class="counter__name">Food Palace</span><br>
+          <span class="counter__note">Biryani, tandoor, curries, Kerala parotta, seafood</span>
+        </span>
+      </div>
+      <div class="counter" style="cursor:default">
+        <span class="counter__mark" aria-hidden="true">🍗</span>
+        <span>
+          <span class="counter__name">Broasted King</span><br>
+          <span class="counter__note">Pressure-fried chicken, burgers, wraps, pizza, family buckets</span>
+        </span>
+      </div>
+      <div class="counter" style="cursor:default">
+        <span class="counter__mark" aria-hidden="true">🥤</span>
+        <span>
+          <span class="counter__name">Juice Palace</span><br>
+          <span class="counter__note">Pressed juice, mojitos, dry fruit shakes, falooda, ice cream</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="shell" style="padding-bottom:5rem">
+  <div class="reveal" style="margin-bottom:2rem">
+    <span class="banner banner--sm">What you can expect</span>
+  </div>
+
+  <div class="fact-grid">
+    <div class="fact reveal">
+      <h4>Service options</h4>
+      <ul><li>Dine-in with table service</li><li>Takeaway</li><li>Delivery</li><li>Catering for parties</li></ul>
+    </div>
+    <div class="fact reveal">
+      <h4>Popular for</h4>
+      <ul><li>Lunch</li><li>Dinner</li><li>Solo dining</li><li>Late-night snacks</li></ul>
+    </div>
+    <div class="fact reveal">
+      <h4>Offerings</h4>
+      <ul><li>Quick bites</li><li>Small plates</li><li>Vegetarian options</li><li>Desserts</li></ul>
+    </div>
+    <div class="fact reveal">
+      <h4>Atmosphere</h4>
+      <ul><li>Casual</li><li>Good for groups</li><li>Good for kids</li><li>Family seating</li></ul>
+    </div>
+    <div class="fact reveal">
+      <h4>Payments</h4>
+      <ul><li>Credit cards</li><li>Debit cards</li><li>NFC mobile payments</li><li>Cash</li></ul>
+    </div>
+    <div class="fact reveal">
+      <h4>Parking</h4>
+      <ul><li>Free parking lot</li><li>Free street parking</li><li>Room for 15–20 bikes</li><li>Cars park nearby</li></ul>
+    </div>
+    <div class="fact reveal">
+      <h4>Kitchen</h4>
+      <ul><li>Halal certified</li><li>Separate veg preparation</li><li>Fresh fish by season</li><li>Tandoor on charcoal</li></ul>
+    </div>
+    <div class="fact reveal">
+      <h4>Delivery</h4>
+      <ul><li>Free within {{ site.delivery_radius }}</li><li>Minimum {{ site.delivery_minimum }}</li><li>Call the counter</li><li>Own riders</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="shell" style="padding-bottom:6rem">
+  <div class="reveal" style="padding:clamp(2rem,5vw,3.5rem); border:1px solid var(--line); border-radius:22px; background:linear-gradient(160deg, rgba(42,31,25,.7), transparent)">
+    <h2 style="font-size:clamp(1.6rem,3.5vw,2.3rem); margin-bottom:1rem">Parking, honestly</h2>
+    <p style="color:var(--coconut-dim); max-width:66ch; margin-bottom:1.5rem">
+      Google warns that a space here can be hard to find, and that is fair. There is
+      room for fifteen to twenty two-wheelers in front. If you are driving, plan to
+      park on a nearby street — it is a short walk, and the parotta is worth it.
+    </p>
+    <a href="{{ site.maps_url }}" target="_blank" rel="noopener" class="btn btn--gold">Open the map before you leave</a>
+  </div>
+</section>
+
+{% endblock %}

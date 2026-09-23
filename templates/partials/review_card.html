@@ -1,0 +1,143 @@
+{% load core_extras %}{% comment %}
+  ===========================================================================
+  REVIEW CARD  —  templates/partials/review_card.html
+  ===========================================================================
+  Drop it inside any loop:
+
+      {% for review in reviews %}
+        {% include "partials/review_card.html" %}
+      {% endfor %}
+
+  Variables it reads (all optional except user_name / rating / text):
+
+      {{ review.id }}                  used for the like endpoint + anchor
+      {{ review.user_name }}           "Vivekanand Exambi"
+      {{ review.profile_pic_url }}     photo URL, falls back to an initial
+      {{ review.is_local_guide }}      True -> "Local Guide ·" prefix
+      {{ review.review_count }}        37
+      {{ review.photo_count }}         51
+      {{ review.rating }}              1-5, drives the star row
+      {{ review.time_ago }}            "a year ago"
+      {{ review.is_edited }}           True -> "Edited a year ago"
+      {{ review.text }}                the review body
+      {{ review.likes }}               like counter
+      {{ review.order_type }}          optional Google detail block
+      {{ review.meal_type }}
+      {{ review.price_range }}
+      {{ review.food_rating }} / .service_rating / .atmosphere_rating
+
+  Long reviews are clamped to six lines with a "Read more" toggle added by
+  main.js. Like posts to core:like_review; Share uses the Web Share API and
+  falls back to the clipboard.
+  ===========================================================================
+{% endcomment %}
+
+<article class="review reveal" id="review-{{ review.id }}" data-id="{{ review.id }}">
+
+  <div class="review__top">
+
+    {# ---- Profile picture: photo if given, otherwise a coloured initial ---- #}
+    <div class="avatar avatar--{{ review.avatar_seed }}">
+      {% if review.profile_pic_url %}
+        <img src="{{ review.profile_pic_url }}" alt="{{ review.user_name }}" loading="lazy">
+      {% else %}
+        <span aria-hidden="true">{{ review.initial }}</span>
+      {% endif %}
+      {% if review.is_local_guide %}
+        <span class="avatar__badge" title="Local Guide"></span>
+      {% endif %}
+    </div>
+
+    {# ---- Name and credits ------------------------------------------------ #}
+    <div>
+      <h3 class="review__name">{{ review.user_name }}</h3>
+      <p class="review__credits">
+        {% if review.is_local_guide %}<span class="guide">Local Guide</span> · {% endif %}
+        {{ review.review_count }} review{{ review.review_count|pluralize }}
+        {% if review.photo_count %} · {{ review.photo_count }} photo{{ review.photo_count|pluralize }}{% endif %}
+      </p>
+    </div>
+
+    {# ---- Three-dot menu --------------------------------------------------- #}
+    <div class="review__menu">
+      <button class="icon-btn" type="button" data-menu-toggle
+              aria-haspopup="true" aria-expanded="false"
+              aria-label="More options for {{ review.user_name }}'s review">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/>
+        </svg>
+      </button>
+
+      <div class="review__dropdown" role="menu">
+        <button type="button" role="menuitem" data-review-action="copy">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Copy review text
+        </button>
+        <button type="button" role="menuitem" data-review-action="google" data-url="{{ site.maps_url }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/>
+          </svg>
+          See it on Google
+        </button>
+        <button type="button" role="menuitem" data-review-action="report">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>
+          </svg>
+          Report a problem
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {# ---- Stars and time --------------------------------------------------- #}
+  <div class="review__rating">
+    <span class="stars" role="img" aria-label="{{ review.rating }} out of 5 stars">
+      {% for _ in review.stars_filled %}
+        <svg viewBox="0 0 24 24" class="star--on" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+      {% endfor %}
+      {% for _ in review.stars_empty %}
+        <svg viewBox="0 0 24 24" class="star--off" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+      {% endfor %}
+    </span>
+    <span class="review__when">{% if review.is_edited %}Edited {% endif %}{{ review.time_ago }}</span>
+  </div>
+
+  {# ---- The review itself ------------------------------------------------ #}
+  <p class="review__text">{{ review.text }}</p>
+
+  {# ---- Optional Google detail block -------------------------------------- #}
+  {% if review.has_detail_block %}
+    <div class="review__detail">
+      {% if review.order_type %}<div><span>Order type</span><span>{{ review.order_type }}</span></div>{% endif %}
+      {% if review.meal_type %}<div><span>Meal type</span><span>{{ review.meal_type }}</span></div>{% endif %}
+      {% if review.price_range %}<div><span>Price per person</span><span>{{ review.price_range }}</span></div>{% endif %}
+      {% if review.food_rating %}<div><span>Food</span><span>{{ review.food_rating }}/5</span></div>{% endif %}
+      {% if review.service_rating %}<div><span>Service</span><span>{{ review.service_rating }}/5</span></div>{% endif %}
+      {% if review.atmosphere_rating %}<div><span>Atmosphere</span><span>{{ review.atmosphere_rating }}/5</span></div>{% endif %}
+    </div>
+  {% endif %}
+
+  {# ---- Like and Share --------------------------------------------------- #}
+  <div class="review__actions">
+    <button class="act {% if review|liked_by:request %}is-liked{% endif %}" type="button"
+            data-like="{% url 'core:like_review' review.id %}"
+            aria-label="Like this review">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z"/>
+        <path d="M7 10l4.2-7.4A1.6 1.6 0 0 1 14 3.4V9h4.9a2 2 0 0 1 2 2.4l-1.4 7a2 2 0 0 1-2 1.6H7"/>
+      </svg>
+      Like
+      <span class="act__count">{{ review.likes }}</span>
+    </button>
+
+    <button class="act" type="button" data-share aria-label="Share this review">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>
+      </svg>
+      Share
+    </button>
+  </div>
+</article>

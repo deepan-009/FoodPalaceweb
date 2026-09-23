@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load core_extras %}
+
+{% block title %}Menu — {{ site.name }}{% endblock %}
+{% block description %}The full Food Palace menu: Malabar biryani, tandoor, Broasted King fried chicken, pizza, juice and falooda. Prices in rupees.{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-bottom:2rem">
+  <div class="shell">
+    <span class="banner">Menu</span>
+    <h1 style="font-size:clamp(2.4rem,6vw,4rem); margin:1.5rem 0 1rem">
+      {{ item_total }} dishes across three counters
+    </h1>
+    <p class="type-lede">
+      Everything below is what is printed on the board in the restaurant.
+      Prices shown as 160/300 are half and full. Fish marked seasonal is priced
+      by the day's catch.
+    </p>
+  </div>
+</section>
+
+<section class="shell" style="padding-bottom:6rem">
+
+  <div class="menu-bar">
+    <div class="filter-row">
+      <a href="{% url 'core:menu' %}" class="filter {% if not active_kitchen %}is-on{% endif %}">All counters</a>
+      {% for key, label in kitchens %}
+        <a href="{% url 'core:menu' %}?kitchen={{ key }}" class="filter {% if active_kitchen == key %}is-on{% endif %}">{{ label }}</a>
+      {% endfor %}
+    </div>
+
+    <div class="filter-row">
+      <button type="button" class="filter is-on" data-diet="all" aria-pressed="true">Everything</button>
+      <button type="button" class="filter" data-diet="veg" aria-pressed="false">Veg</button>
+      <button type="button" class="filter" data-diet="nonveg" aria-pressed="false">Non-veg</button>
+    </div>
+
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--coconut-dim)" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <input type="search" id="menu-search" placeholder="Search biryani, kabab, falooda…" aria-label="Search the menu">
+    </label>
+  </div>
+
+  {% for block in grouped %}
+    <div class="menu-kitchen">
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:.5rem; color:var(--coconut)">{{ block.label }}</h2>
+      <p style="color:var(--coconut-dim); margin:0 0 2.5rem; font-size:.95rem">
+        {% if block.key == 'food_palace' %}The main kitchen. Malabar, North Indian and Arabian, plus the tandoor.
+        {% elif block.key == 'broasted_king' %}The fried chicken counter, sharing the same dining room.
+        {% else %}The cold counter: juice pressed to order, falooda built by hand.{% endif %}
+      </p>
+
+      {% for category in block.categories %}
+        <div class="menu-cat" id="{{ category.slug }}">
+          <div class="menu-cat__head">
+            <span class="banner banner--sm">{{ category.name }}</span>
+            {% if category.blurb %}<span class="menu-cat__blurb">{{ category.blurb }}</span>{% endif %}
+          </div>
+
+          <div class="menu-list">
+            {% for item in category.items.all %}
+              <div class="menu-row" data-name="{{ item.name }}" data-veg="{% if item.is_veg %}1{% else %}0{% endif %}">
+                <span class="diet {% if item.is_veg %}diet--veg{% endif %}" title="{% if item.is_veg %}Vegetarian{% else %}Non-vegetarian{% endif %}"></span>
+
+                <span class="menu-row__name">
+                  {{ item.name }}{% if item.is_signature %}<span class="flame" title="House favourite">★</span>{% endif %}
+                  {% if item.description %}<br><small style="color:var(--coconut-dim); font-size:.82rem">{{ item.description }}</small>{% endif %}
+                </span>
+
+                <span class="menu-row__price {% if item.price and not item.price.0.isdigit %}is-season{% endif %}">
+                  {% with parts=item.price|split_price %}
+                    {% if parts|length > 1 %}
+                      {% for part in parts %}{% if not forloop.first %}<span class="split"> / </span>{% endif %}₹{{ part }}{% endfor %}
+                    {% else %}
+                      {{ item.price_display }}
+                    {% endif %}
+                  {% endwith %}
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% empty %}
+    <div class="menu-empty">
+      <p>The menu has not been loaded yet.</p>
+      <p style="font-size:.9rem">Run <code style="color:var(--saffron)">python manage.py seed_data</code> to load it from the menu card.</p>
+    </div>
+  {% endfor %}
+
+  <p class="menu-empty" id="menu-empty" hidden>
+    Nothing matches that search. Try "biryani", "paneer" or "falooda".
+  </p>
+
+  <div style="margin-top:3rem; padding:1.6rem; border:1px solid var(--line); border-radius:var(--radius); background:rgba(42,31,25,.4)">
+    <p style="margin:0; color:var(--coconut-dim); font-size:.92rem">
+      Prices are per plate and may change without notice. Kerala specials —
+      puttu, appam, idiappam, pathal kappa, wheat dosa and Thalassery snacks —
+      are served at the morning counter and priced at the till.
+      To order, call <a href="tel:{{ site.phone_primary }}" style="color:var(--saffron)">{{ site.phone_primary }}</a>.
+    </p>
+  </div>
+</section>
+
+{% endblock %}

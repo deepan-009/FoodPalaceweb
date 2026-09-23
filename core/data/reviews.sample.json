@@ -1,0 +1,28 @@
+[
+  {
+    "user_name": "Paste the reviewer name here",
+    "profile_pic_url": "",
+    "is_local_guide": true,
+    "review_count": 37,
+    "photo_count": 51,
+    "rating": 4,
+    "time_ago": "5 years ago",
+    "is_edited": true,
+    "text": "Paste the full review text here.",
+    "order_type": "Dine in",
+    "meal_type": "Dinner",
+    "price_range": "₹200–400",
+    "food_rating": 5,
+    "service_rating": 5,
+    "atmosphere_rating": 4,
+    "likes": 0,
+    "is_featured": false,
+    "order": 1
+  },
+  {
+    "user_name": "Second reviewer",
+    "rating": 5,
+    "time_ago": "a year ago",
+    "text": "Only user_name, rating and text are required. Everything else is optional."
+  }
+]

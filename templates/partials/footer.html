@@ -1,0 +1,52 @@
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__grid">
+      <div>
+        <p style="font-family:var(--display); font-size:1.6rem; margin:0 0 .5rem">{{ site.name }}</p>
+        <p style="font-family:var(--kannada); color:var(--coconut-dim); font-size:.9rem; margin:0 0 1rem">{{ site.name_kn }}</p>
+        <p style="color:var(--coconut-dim); font-size:.92rem; max-width:34ch; margin:0">
+          {{ site.address }}
+        </p>
+        <p style="color:var(--coconut-dim); font-size:.85rem; margin:.8rem 0 0">Plus code {{ site.plus_code }}</p>
+      </div>
+
+      <div>
+        <h5>Pages</h5>
+        <ul>
+          <li><a href="{% url 'core:home' %}">Home</a></li>
+          <li><a href="{% url 'core:menu' %}">Menu</a></li>
+          <li><a href="{% url 'core:about' %}">About us</a></li>
+          <li><a href="{% url 'core:awards' %}">Awards</a></li>
+          <li><a href="{% url 'core:reviews' %}">Reviews</a></li>
+          <li><a href="{% url 'core:contact' %}">Contact us</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Order</h5>
+        <ul>
+          <li><a href="tel:{{ site.phone_primary }}">{{ site.phone_primary }}</a></li>
+          <li><a href="tel:{{ site.phone_secondary }}">{{ site.phone_secondary }}</a></li>
+          <li><a href="tel:{{ site.phone_third }}">{{ site.phone_third }}</a></li>
+          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+          <li><a href="{{ site.maps_url }}" target="_blank" rel="noopener">Open in Google Maps</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Every day</h5>
+        <p style="font-family:var(--display); font-size:1.7rem; color:var(--saffron); margin:0 0 .3rem">6 am – 11:30 pm</p>
+        <p style="color:var(--coconut-dim); font-size:.9rem; margin:0 0 1rem">No weekly off. Breakfast from six, shawarma till close.</p>
+        <span class="status" data-status>
+          <span class="status__dot"></span>
+          <span data-status-text>Checking hours</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="footer__legal">
+      <span>© {% now "Y" %} {{ site.name }}. Halal kitchen. Free home delivery within {{ site.delivery_radius }} on orders over {{ site.delivery_minimum }}.</span>
+      <span>Dine in · Takeaway · Delivery · Catering</span>
+    </div>
+  </div>
+</footer>
